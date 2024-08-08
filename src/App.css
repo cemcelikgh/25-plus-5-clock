@@ -1,0 +1,63 @@
+#timer-label {
+  width: 270px;
+  height: 160px;
+  border: 7px solid #083359;
+  border-radius: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Koh+Santepheap:wght@300&display=swap');
+
+h2 {
+  font-family: "Koh Santepheap", serif;
+  font-size: 28px;
+  font-weight: 300;
+}
+
+p {
+  font-size: 30px;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+#time-left {
+  font-size: 80px;
+  line-height: 80px;
+}
+
+#period-settings {
+  display: flex;
+}
+
+#period-settings > div {
+  padding-left: 25px;
+  padding-right: 25px;
+}
+
+.period {
+  display: flex;
+  padding-top: 10px;
+  justify-content: space-evenly;
+}
+
+i {
+  font-size: 36px;
+  cursor: pointer;
+}
+
+.period i {
+  font-size: 24px;
+}
+
+#start-stop {
+  margin-top: 36px;
+  border: 7px solid #083359;
+  border-radius: 24px;
+}
+
+#start-stop i {
+  padding: 16px;
+}
