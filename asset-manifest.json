@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/25-plus-5-clock/static/css/main.03667ed0.css",
+    "main.js": "/25-plus-5-clock/static/js/main.7c0643db.js",
+    "static/media/KohSantepheap-Light.ttf": "/25-plus-5-clock/static/media/KohSantepheap-Light.bb77c5e4313c3dc7daca.ttf",
+    "index.html": "/25-plus-5-clock/index.html",
+    "main.03667ed0.css.map": "/25-plus-5-clock/static/css/main.03667ed0.css.map",
+    "main.7c0643db.js.map": "/25-plus-5-clock/static/js/main.7c0643db.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.03667ed0.css",
+    "static/js/main.7c0643db.js"
+  ]
+}
