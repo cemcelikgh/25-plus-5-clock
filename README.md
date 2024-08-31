@@ -1,7 +1,7 @@
-# 25_plus_5_clock-freecodecamp
-Front End Development Libraries Certification Project
-<br>JavaScript Calculator
+# 25-plus-5-clock
+freeCodeCamp Front End Development Libraries Certification Project
+<br>25 + 5 Clock
 
-[freeCodeCamp](https://www.freecodecamp.org)
+Browse: <https://cemcelikgh.github.io/javascript-calculator/>
 
-![JavaScript Calculator](./25-plus-5-clock.jpg)
+[![25 + 5 Clock Preview](./public/assets/25-plus-5-clock-preview.jpg "Browse 25 + 5 Clock")](https://cemcelikgh.github.io/javascript-calculator/)

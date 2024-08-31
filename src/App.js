@@ -53,6 +53,13 @@ function App() {
       }
     };
 
+    // const timeLeft = document.getElementById('time-left');
+    // if (timeLeft) {
+    //   showMinute(isSession) !== '00'
+    //     ? timeLeft.style.color = '#FFFFFF'
+    //     : timeLeft.style.color = '#FF0000';
+    // }
+
     return `${showMinute(isSession)}:${convertTwoDigit(secondsLeft)}`;
 
   };

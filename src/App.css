@@ -10,12 +10,14 @@
   margin-bottom: 20px;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Koh+Santepheap:wght@300&display=swap');
+@font-face {
+  font-family: "Koh Santepheap";
+  src: url('../public/assets/fonts/KohSantepheap-Light.ttf') format(truetype);
+}
 
 h2 {
   font-family: "Koh Santepheap", serif;
   font-size: 28px;
-  font-weight: 300;
 }
 
 p {
