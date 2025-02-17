@@ -1,5 +1,5 @@
 import './App.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 
 function App() {
 
@@ -10,90 +10,93 @@ function App() {
   const [secondsLeft, setSecondsLeft] = useState(0);
   const [isSession, setIsSession] = useState(true);
   const [isStart, setIsStart] = useState(false);
+  const intervalRef = useRef(null);
+  const timeLeftRef = useRef(null);
+  const beepRef = useRef(null);
+
 
   useEffect(() => {
-    let intervalID;
-    if (isStart) {intervalID = setInterval(
-      () => {setSecondsLeft(sec => sec - 1)}
-    , 1000)};
-    return () => clearInterval(intervalID);
+    if (isStart) {
+      intervalRef.current = setInterval(
+      () => { setSecondsLeft(sec => sec - 1) }
+      , 1000)
+    };
+    return () => { clearInterval(intervalRef.current) };
   }, [isStart]);
 
-  function convertTwoDigit(period) {
-    return period > 9 ? period : '0' + period;
-  };
-
-  function showMinute(isSession) {
-    return isSession
-      ? convertTwoDigit(sessionMinutesLeft)
-      : convertTwoDigit(breakMinutesLeft);
-  };
-
-  function counter() {
-
-    if (secondsLeft === -1) {
-      if (isSession) {
-        setSecondsLeft(59);
-        setSessionMinutesLeft(sessionMinutesLeft - 1);
-        if(sessionMinutesLeft === 0) {
-          setSecondsLeft(0);
-          setIsSession(false);
-          setSessionMinutesLeft(sessionLength);
-          document.getElementById('beep').play();
-        }
-      } else {
-        setSecondsLeft(59);
-        setBreakMinutesLeft(breakMinutesLeft - 1);
-        if(breakMinutesLeft === 0) {
-          setSecondsLeft(0);
-          setIsSession(true);
-          setBreakMinutesLeft(breakLength);
-          document.getElementById('beep').play();
-        }
+  if (secondsLeft === -1) {
+    if (isSession) {
+      setSecondsLeft(59);
+      setSessionMinutesLeft(sessionMinutesLeft - 1);
+      if(sessionMinutesLeft === 0) {
+        setSecondsLeft(0);
+        setIsSession(false);
+        setSessionMinutesLeft(sessionLength);
+        beepRef.current.play();
       }
-    };
-
-    // const timeLeft = document.getElementById('time-left');
-    // if (timeLeft) {
-    //   showMinute(isSession) !== '00'
-    //     ? timeLeft.style.color = '#FFFFFF'
-    //     : timeLeft.style.color = '#FF0000';
-    // }
-
-    return `${showMinute(isSession)}:${convertTwoDigit(secondsLeft)}`;
-
+    } else {
+      setSecondsLeft(59);
+      setBreakMinutesLeft(breakMinutesLeft - 1);
+      if(breakMinutesLeft === 0) {
+        setSecondsLeft(0);
+        setIsSession(true);
+        setBreakMinutesLeft(breakLength);
+        beepRef.current.play();
+      }
+    }
   };
 
-  function sessionDecrement() {
+
+  const convertTwoDigit = useCallback((period) => {
+    if (period > 9) {return  period} else {return '0' + period};
+  }, []);
+
+  const showMinute = useCallback((isSession) => {
+    if (isSession) {
+      return convertTwoDigit(sessionMinutesLeft)
+    } else { return convertTwoDigit(breakMinutesLeft) }
+  }, [convertTwoDigit, sessionMinutesLeft, breakMinutesLeft]);
+
+  const counter = `${showMinute(isSession)}:${convertTwoDigit(secondsLeft)}`;
+
+
+  if (timeLeftRef.current) {
+    if (showMinute(isSession) !== '00') {
+      timeLeftRef.current.className = 'wc'
+    } else { timeLeftRef.current.className = 'rc'}
+  }
+
+
+  const sessionDecrement = useCallback(() => {
     if (sessionLength > 1) {
       setSessionLength(sessionLength - 1);
       setSessionMinutesLeft(sessionLength - 1);
       setSecondsLeft(0);
     }
-  };
-  function sessionIncrement() {
+  }, [sessionLength]);
+  const sessionIncrement = useCallback(() => {
     if (sessionLength < 60) {
       setSessionLength(sessionLength + 1);
       setSessionMinutesLeft(sessionLength + 1);
       setSecondsLeft(0);
     }
-  };
-  function breakDecrement() {
+  }, [sessionLength]);
+  const breakDecrement = useCallback(() => {
     if (breakLength > 1) {
       setBreakLength(breakLength - 1);
       setBreakMinutesLeft(sessionLength - 1);
       setSecondsLeft(0);
     }
-  };
-  function breakIncrement() {
+  }, [sessionLength, breakLength]);
+  const breakIncrement = useCallback(() => {
     if (breakLength < 60) {
       setBreakLength(breakLength + 1);
       setBreakMinutesLeft(sessionLength + 1);
       setSecondsLeft(0);
     }
-  };
+  }, [sessionLength, breakLength]);
 
-  function resetCounter() {
+  const resetCounter = useCallback(() => {
     setIsStart(false);
     setIsSession(true);
     setSessionLength(25);
@@ -101,16 +104,15 @@ function App() {
     setBreakLength(5);
     setBreakMinutesLeft(5);
     setSecondsLeft(0);
-    const beep = document.getElementById('beep');
-    beep.pause();
-    beep.currentTime = 0;
-  };
+    beepRef.current.pause();
+    beepRef.current.currentTime = 0;
+  }, []);
 
   return (
     <>
       <section id="timer-label">
         <h2>{isSession ? 'Session' : 'Break'}</h2>
-        <p id="time-left">{counter()}</p>
+        <p id="time-left" ref={timeLeftRef}>{counter}</p>
       </section>
       <section id='period-settings'>
         <div>
@@ -118,12 +120,12 @@ function App() {
           <div className='period'>
             <i id="session-decrement"
               className="fa-solid fa-circle-chevron-down"
-              onClick={!isStart ? sessionDecrement : null}
+              onClick={!isStart ? sessionDecrement : undefined}
             ></i>
             <p id="session-length">{sessionLength}</p>
             <i id="session-increment"
               className="fa-solid fa-circle-chevron-up"
-              onClick={!isStart ? sessionIncrement : null}
+              onClick={!isStart ? sessionIncrement : undefined}
             ></i>
           </div>
         </div>
@@ -132,12 +134,12 @@ function App() {
           <div className='period'>
             <i id="break-decrement"
               className="fa-solid fa-circle-chevron-down"
-              onClick={!isStart ? breakDecrement : null}
+              onClick={!isStart ? breakDecrement : undefined}
             ></i>
             <p id="break-length">{breakLength}</p>
             <i id="break-increment"
               className="fa-solid fa-circle-chevron-up"
-              onClick={!isStart ? breakIncrement : null}
+              onClick={!isStart ? breakIncrement : undefined}
             ></i>
           </div>
         </div>
@@ -153,6 +155,7 @@ function App() {
         ></i>
       </section>
       <audio id='beep'
+        ref={beepRef}
         src='https://cdn.freecodecamp.org/testable-projects-fcc/audio/BeepSound.wav'
         preload="auto"
       ></audio>
