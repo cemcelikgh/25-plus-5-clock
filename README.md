@@ -2,6 +2,6 @@
 freeCodeCamp Front End Development Libraries Certification Project
 <br>25 + 5 Clock
 
-Browse: <https://cemcelikgh.github.io/25-plus-5-clock/>
+Display: <https://session-and-break-timer.netlify.app/>
 
-[![25 + 5 Clock Preview](./public/assets/25-plus-5-clock-preview.jpg "Browse 25 + 5 Clock")](https://cemcelikgh.github.io/25-plus-5-clock/)
+[![25 + 5 Clock Preview](./public/assets/25-plus-5-clock-preview.png "Display 25 + 5 Clock")](https://session-and-break-timer.netlify.app/)
