@@ -11,7 +11,6 @@ function App() {
   const [isSession, setIsSession] = useState(true);
   const [isStart, setIsStart] = useState(false);
   const intervalRef = useRef(null);
-  const timeLeftRef = useRef(null);
   const beepRef = useRef(null);
 
 
@@ -60,41 +59,48 @@ function App() {
   const counter = `${showMinute(isSession)}:${convertTwoDigit(secondsLeft)}`;
 
 
-  if (timeLeftRef.current) {
-    if (showMinute(isSession) !== '00') {
-      timeLeftRef.current.className = 'wc'
-    } else { timeLeftRef.current.className = 'rc'}
-  }
+  let lastOneMinute;
+  if (showMinute(isSession) !== '00') {
+    lastOneMinute = undefined;
+  } else { lastOneMinute = 'last-one-minute' }
 
 
   const sessionDecrement = useCallback(() => {
-    if (sessionLength > 1) {
-      setSessionLength(sessionLength - 1);
-      setSessionMinutesLeft(sessionLength - 1);
-      setSecondsLeft(0);
+    if (!isStart) {
+      if (sessionLength > 1) {
+        setSessionLength(sessionLength - 1);
+        setSessionMinutesLeft(sessionLength - 1);
+        setSecondsLeft(0);
+      }
     }
-  }, [sessionLength]);
+  }, [isStart, sessionLength]);
   const sessionIncrement = useCallback(() => {
-    if (sessionLength < 60) {
-      setSessionLength(sessionLength + 1);
-      setSessionMinutesLeft(sessionLength + 1);
-      setSecondsLeft(0);
+    if (!isStart) {
+      if (sessionLength < 60) {
+        setSessionLength(sessionLength + 1);
+        setSessionMinutesLeft(sessionLength + 1);
+        setSecondsLeft(0);
+      }
     }
-  }, [sessionLength]);
+  }, [isStart, sessionLength]);
   const breakDecrement = useCallback(() => {
-    if (breakLength > 1) {
-      setBreakLength(breakLength - 1);
-      setBreakMinutesLeft(sessionLength - 1);
-      setSecondsLeft(0);
+    if (!isStart) {
+      if (breakLength > 1) {
+        setBreakLength(breakLength - 1);
+        setBreakMinutesLeft(breakLength - 1);
+        setSecondsLeft(0);
+      }
     }
-  }, [sessionLength, breakLength]);
+  }, [isStart, breakLength]);
   const breakIncrement = useCallback(() => {
-    if (breakLength < 60) {
-      setBreakLength(breakLength + 1);
-      setBreakMinutesLeft(sessionLength + 1);
-      setSecondsLeft(0);
+    if (!isStart) {
+      if (breakLength < 60) {
+        setBreakLength(breakLength + 1);
+        setBreakMinutesLeft(breakLength + 1);
+        setSecondsLeft(0);
+      }
     }
-  }, [sessionLength, breakLength]);
+  }, [isStart, breakLength]);
 
   const resetCounter = useCallback(() => {
     setIsStart(false);
@@ -112,34 +118,34 @@ function App() {
     <>
       <section id="timer-label">
         <h2>{isSession ? 'Session' : 'Break'}</h2>
-        <p id="time-left" ref={timeLeftRef}>{counter}</p>
+        <p id="time-left" className={lastOneMinute}>{counter}</p>
       </section>
       <section id='period-settings'>
         <div>
-          <h2 id="session-label">Session Lenght</h2>
+          <h2 id="session-label">Session Length</h2>
           <div className='period'>
             <i id="session-decrement"
               className="fa-solid fa-circle-chevron-down"
-              onClick={!isStart ? sessionDecrement : undefined}
+              onClick={sessionDecrement}
             ></i>
             <p id="session-length">{sessionLength}</p>
             <i id="session-increment"
               className="fa-solid fa-circle-chevron-up"
-              onClick={!isStart ? sessionIncrement : undefined}
+              onClick={sessionIncrement}
             ></i>
           </div>
         </div>
         <div>
-          <h2 id="break-label">Break Lenght</h2>
+          <h2 id="break-label">Break Length</h2>
           <div className='period'>
             <i id="break-decrement"
               className="fa-solid fa-circle-chevron-down"
-              onClick={!isStart ? breakDecrement : undefined}
+              onClick={breakDecrement}
             ></i>
             <p id="break-length">{breakLength}</p>
             <i id="break-increment"
               className="fa-solid fa-circle-chevron-up"
-              onClick={!isStart ? breakIncrement : undefined}
+              onClick={breakIncrement}
             ></i>
           </div>
         </div>

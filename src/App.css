@@ -30,8 +30,9 @@ p {
   line-height: 80px;
 }
 
-.wc { color: #ffffff }
-.rc { color: #ff0000 }
+.last-one-minute {
+  color: #ff0000;
+}
 
 #period-settings {
   display: flex;
