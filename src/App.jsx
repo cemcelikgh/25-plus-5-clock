@@ -160,11 +160,12 @@ function App() {
           onClick={resetCounter}
         ></i>
       </section>
-      <audio id='beep'
+      <audio
+        id='beep'
         ref={beepRef}
-        src='https://cdn.freecodecamp.org/testable-projects-fcc/audio/BeepSound.wav'
+        src='/assets/BeepSound.wav'
         preload="auto"
-      ></audio>
+      />
     </>
   );
 
